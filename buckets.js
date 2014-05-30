@@ -133,11 +133,17 @@
 		}
 	};
 
-	Bucket.prototype.raw = function(items) {
+	Bucket.prototype.raw = function(items, cond) {
 		var that = this;
 		items = items || this.items;
-		return items.map(function(item, i) {
-			return item.data;
+		return items.filter(function(item, i) {
+			if (typeof cond == "function") {
+				if(cond(item)) {
+					return item.data;
+				}
+			} else {
+				return item.data;
+			}
 		});
 	};
 
@@ -278,6 +284,7 @@
 
 		this.notify();
 	};
+
 
 	// Export javascript to JSON
 	Bucket.prototype.toJSON = function() {
